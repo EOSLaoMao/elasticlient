@@ -14,6 +14,7 @@
 #include <random>
 #include <thread>
 #include <time.h>
+#include <cpr/util.h>
 #include <cpr/session.h>
 #include "logging-impl.h"
 
@@ -55,6 +56,8 @@ class Client::Implementation {
         if (hostUrlList.empty()) {
             throw std::runtime_error("Hosts URL list can not be empty.");
         }
+        /// Disable 100-continue feature.
+        session.SetOption(cpr::util::parseHeader("Expect:"));
         session.SetTimeout(timeout);
         session.SetAuth(auth);
         resetCurrentHostInfo();
